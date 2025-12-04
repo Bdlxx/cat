@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测测你是不是小猫咪🐱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Comic Sans MS", "Arial Rounded MT Bold", sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #fef7fb 0%, #f0f8fb 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .title {
+            font-size: 2.8rem;
+            color: #e53e3e;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 3px 3px 0px #ffbaaf, 6px 6px 0px rgba(229,62,62,0.1);
+            animation: bounce 1s ease infinite alternate;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #9f7aea;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .test-box {
+            width: 90%;
+            max-width: 550px;
+            height: 320px;
+            background: #fff;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(159,122,234,0.15);
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #ffd166;
+        }
+        .press-area {
+            width: 80%;
+            height: 70%;
+            background: rgba(255,209,102,0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px dashed #ff9f1c;
+        }
+        .press-area:hover {
+            background: rgba(255,209,102,0.3);
+            transform: scale(1.02);
+        }
+        .press-area.active {
+            background: rgba(255,209,102,0.4);
+        }
+        .test-text {
+            font-size: 2rem;
+            color: #dc2626;
+            text-align: center;
+            z-index: 2;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+        .cat-icon {
+            position: absolute;
+            font-size: 6rem;
+            opacity: 0.15;
+            z-index: 1;
+            transition: transform 0.5s ease;
+        }
+        .test-box:hover .cat-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+        .cat1 { top: 10px; left: 10px; transform: rotate(-15deg); }
+        .cat2 { bottom: 10px; right: 10px; transform: rotate(15deg); }
+        .cat3 { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); opacity: 0.08; }
+        .result {
+            margin-top: 40px;
+            font-size: 1.8rem;
+            color: #2563eb;
+            text-align: center;
+            display: none;
+            animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(37,99,235,0.15);
+            max-width: 90%;
+        }
+        .tip {
+            margin-top: 25px;
+            font-size: 1.1rem;
+            color: #6b7280;
+            text-align: center;
+            background: #fef2f2;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 2px dashed #fca5a5;
+        }
+        .author {
+            position: fixed;
+            bottom: 25px;
+            color: #ec4899;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(236,72,153,0.2);
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #fef08a;
+            border-radius: 50%;
+            animation: confetti 5s ease-in-out infinite;
+            z-index: 100;
+            opacity: 0;
+        }
+        .progress-bar {
+            position: absolute;
+            bottom: 30px;
+            width: 70%;
+            height: 12px;
+            background: #f3f4f6;
+            border-radius: 6px;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9f1c, #ffd166);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+        @keyframes pop {
+            0% { transform: scale(0.7) translateY(20px); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        @media (max-width: 768px) {
+            .title { font-size: 2.2rem; }
+            .test-text { font-size: 1.7rem; }
+            .result { font-size: 1.5rem; padding: 15px 20px; }
+            .press-area { width: 85%; height: 65%; }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">测测你在猫猫世界的身份🐱</h1>
+    <p class="subtitle">哆啦家族驾到！解锁蓝胖子同款猫咪身份～</p>
+    
+    <div class="test-box" id="testBox">
+        <div class="cat-icon cat1">🐱</div>
+        <div class="press-area" id="pressArea">
+            <div class="test-text">长按我<br>解锁猫咪身份!</div>
+        </div>
+        <div class="cat-icon cat2">🐾</div>
+        <div class="cat-icon cat3">😼</div>
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+    
+    <div class="result" id="result"></div>
+    <div class="tip" id="tip">⚠️ 提示: 仅长按中间虚线区域有效，清除缓存可重新抽！</div>
+    <div class="author">作者: Bdlxx 🐱</div>
+
+    <script>
+        const pressArea = document.getElementById('pressArea');
+        const result = document.getElementById('result');
+        const tip = document.getElementById('tip');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        
+        // 哆啦家族+动画明星+热梗+经典四合一系列（50种！新增哆啦A梦/哆啦美专属身份）
+        const catResults = [
+            // 原有经典+热梗+动画明星身份（48种）
+            "🐽 你是一只「猪咪本咪」！吃嘛嘛香，睡嘛嘛沉，肚子圆滚滚，走路摇摇晃晃，可爱到犯规～",
+            "🌚 你是一只「夜猫子战神」！凌晨3点蹦迪，早上10点不起，主打一个昼夜颠倒，活力无限！",
+            "🤯 你是一只「话痨暹罗猫」！见人就喵喵叫，分享八卦停不下来，是家里的消息通～",
+            "🍼 你是一只「妈宝小奶猫」！粘人第一名，走哪跟哪，离开主人就emo，需要时刻贴贴～",
+            "🎣 你是一只「钓鱼执法猫」！假装高冷不理人，等你不关注它，立刻蹭腿求摸摸～",
+            "🥫 你是一只「罐头挖掘机」！听到开罐声，比火箭还快，眼里只有罐头，没有主人～",
+            "😈 你是一只「捣蛋鬼狸花猫」！拆家小能手，推杯子、抓沙发，每天都有新惊喜（惊吓）～",
+            "☁️ 你是一只「云朵布偶猫」！颜值天花板，性格软乎乎，随便rua都不生气，治愈系NO.1～",
+            "🕵️ 你是一只「侦探黑猫」！喜欢躲在角落观察一切，突然窜出来吓你一跳，神秘感拉满～",
+            "🍊 你是一只「橘猫届卷王」！不仅能吃，还能睡，体重超标但灵活依旧，主打一个反差萌～",
+            "💻 你是一只「键盘侠猫」！喜欢趴在键盘上踩奶，随机发送乱码，帮你「自动办公」～",
+            "😴 你是一只「睡神加菲猫」！一天24小时，23小时在睡觉，剩下1小时用来干饭～",
+            "🌈 你是一只「彩虹曼基康」！小短腿跑起来蹦蹦跳跳，像个小团子，萌化所有人的心～",
+            "🦁 你是一只「霸气缅因猫」！体型庞大却粘人，像个巨型毛绒玩具，安全感爆棚～",
+            "✨ 你是一只「隐藏款仙女猫」！运气爆棚！颜值高、性格好，是万中无一的吸猫界天选之子～",
+            "🌧️ 你是一只「emo淋雨猫」！阴雨天就趴在窗边发呆，眼神忧郁，仿佛有八百字小作文要写～",
+            "🎮 你是一只「游戏宅猫」！主人打游戏时必趴在键盘上，抢鼠标、挡屏幕，主打一个“我也要玩”～",
+            "🍉 你是一只「西瓜味小橘猫」！夏天最爱趴在空调房吃西瓜，圆滚滚凉丝丝，是行走的小西瓜～",
+            "🛋️ 你是一只「沙发土豆猫」！能躺着不坐着，能坐着不站着，沙发就是宇宙中心，一动不想动～",
+            "🎤 你是一只「麦霸小猫」！听到音乐就跟着嚎叫，音调忽高忽低，自我感觉是猫界歌王～",
+            "📦 你是一只「纸箱探险家」！任何纸箱都能当成城堡，钻进去就不出来，主打一个神秘失踪～",
+            "🧶 你是一只「毛线球狂魔」！看到毛线球就失控，追着跑、抱着啃，家里永远找不到完整毛线～",
+            "🌞 你是一只「阳光向日葵猫」！哪里有太阳就趴哪里，晒得肚皮发烫也不挪窝，是行走的小暖炉～",
+            "🚪 你是一只「开门强迫症猫」！不管门开着还是关着，都要扒拉几下，主打一个“我要掌控所有门”～",
+            "🍤 你是一只「海鲜过敏猫」！看到小鱼干流口水，吃一口就打喷嚏，又菜又爱吃～",
+            "📱 你是一只「手机迷猫」！主人看手机时必凑过来，用爪子拍屏幕，以为能摸到里面的小猫咪～",
+            "❄️ 你是一只「冰雪奇缘猫」！冬天不爱出门，喜欢趴在暖气上，毛蓬松像雪球，怕冷到极致～",
+            "🌱 你是一只「绿植杀手猫」！家里的绿植全被啃秃，叶子咬得稀巴烂，主打一个“万物皆可吃”～",
+            "🚗 你是一只「车迷猫」！听到汽车鸣笛就跑到窗边张望，看到跑车就喵喵叫，仿佛在说“好酷”～",
+            "🎭 你是一只「戏精猫」！不小心摔了就立刻装可怜，主人一摸就撒娇，演技堪比奥斯卡影帝～",
+            "🎶 你是一只「哈基米本米」！叫声软萌“哈基米～”，走路自带BGM，走到哪萌到哪，治愈所有不开心～",
+            "👩‍🌾 你是一只「反向铲屎官猫」！明明是猫，却总帮主人“铲屎”（扒拉猫砂盆），还会监督主人喂粮，操碎了心～",
+            "🐾 你是一只「哈基米合唱团团长」！召集所有小猫咪一起“哈基米”，叫声整齐划一，是猫界洗脑神曲创始人～",
+            "💩 你是一只「铲屎官的爹猫」！拉完屎就跑，让铲屎官收拾残局，还一脸“这是你该做的”，霸气侧漏～",
+            "🎤 你是一只「哈基米rapper」！把“哈基米”唱成rap，节奏卡点超准，走在街上自带潮流气场～",
+            "🤝 你是一只「平等主义猫」！不把铲屎官当仆人，而是当朋友，会分享玩具，偶尔还会“投喂”铲屎官（叼来虫子）～",
+            "🎵 你是一只「哈基米指挥家」！听到音乐就挥舞爪子打节拍，嘴里“哈基米”不停，仿佛在指挥交响乐～",
+            "😤 你是一只「暴躁铲屎官猫」！铲屎官动作慢了就喵喵催，没及时换猫砂就随地大小便，主打一个“我脾气不好”～",
+            "👮 你是一只「黑猫警长本警」！头戴警帽，眼神锐利，专抓“一只耳”（家里的小虫子），是猫界正义守护神～",
+            "🐱 你是一只「哆啦A梦的猫朋友」！拥有神奇口袋（其实是肚子上的绒毛），能“掏出”各种小零食，治愈所有烦恼～",
+            "🎀 你是一只「美少女战士猫」！变身口号“喵咪力量，变身！”，喜欢踮着脚尖走路，自带少女感滤镜～",
+            "🐯 你是一只「猫和老鼠汤姆猫」！虽然总被杰瑞耍，但永不放弃，乐观又搞笑，是猫界喜剧人天花板～",
+            "🦸 你是一只「超级飞侠猫咪版」！喜欢跳上跳下，速度飞快，帮主人“派送”玩具，是家里的小快递员～",
+            "🌈 你是一只「彩虹猫」！身体像彩虹一样绚烂，走路带闪光特效，走到哪就把快乐带到哪～",
+            "🐉 你是一只「哪吒同款火尖枪猫」！爪子锋利如枪，喜欢追着光点跑，仿佛在“斩妖除魔”，霸气十足～",
+            "🎨 你是一只「小猪佩奇的猫咪邻居」！性格温柔，喜欢和小朋友（小猫咪）一起玩泥巴，亲和力满分～",
+            "🚀 你是一只「奥特曼猫咪形态」！遇到“怪兽”（吸尘器）就摆出战斗姿势，虽然会害怕，但从不退缩～",
+            "📚 你是一只「蓝猫淘气三千问猫」！好奇心爆棚，喜欢追着主人问“为什么”，是猫界十万个为什么～",
+            // 新增2种哆啦家族专属身份
+            "🔵 你是一只「哆啦A梦本猫」！通体湛蓝，肚子上藏着“四次元口袋”，能掏出罐头、逗猫棒，帮铲屎官解决所有烦恼，超治愈～",
+            "🎀 你是一只「哆啦美同款猫咪」！粉色铃铛+白色围脖，温柔又细心，会用“空气炮”（其实是吹口气）安抚emo的铲屎官，是猫界小天使～"
+        ];
+        
+        // 检查本地存储是否有结果
+        const storedResult = localStorage.getItem('funnyCatResult');
+        if (storedResult) {
+            result.textContent = storedResult;
+            result.style.display = 'block';
+            pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫啦!';
+            pressArea.style.pointerEvents = 'none';
+        }
+        
+        // 生成彩色纸屑特效
+        function createConfetti() {
+            const colors = ['#fef08a', '#f87171', '#60a5fa', '#a78bfa', '#f472b6'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+        
+        // 长按逻辑
+        let pressTimer;
+        let pressCounter = 0;
+        let textInterval;
+        let progressInterval;
+        const pressTexts = [
+            "喵～ 再按一下嘛～",
+            "快松手！本喵要生气啦！",
+            "好吧好吧，再坚持一下～",
+            "马上就好啦！倒计时1秒！"
+        ];
+        const pressDuration = 3000;
+        const progressStep = 100 / (pressDuration / 100);
+        
+        pressArea.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            if (storedResult) return;
+            
+            pressArea.classList.add('active');
+            progressBar.style.display = 'block';
+            pressCounter = 0;
+            progressFill.style.width = '0%';
+            
+            textInterval = setInterval(() => {
+                if (pressCounter < pressTexts.length) {
+                    pressArea.querySelector('.test-text').textContent = pressTexts[pressCounter];
+                    pressCounter++;
+                } else {
+                    pressArea.querySelector('.test-text').textContent = pressTexts[pressTexts.length - 1];
+                }
+            }, 700);
+            
+            progressInterval = setInterval(() => {
+                const currentWidth = parseFloat(progressFill.style.width) || 0;
+                if (currentWidth < 100) {
+                    progressFill.style.width = `${currentWidth + progressStep}%`;
+                } else {
+                    clearInterval(progressInterval);
+                }
+            }, 100);
+            
+            pressTimer = setTimeout(() => {
+                clearInterval(textInterval);
+                clearInterval(progressInterval);
+                pressArea.classList.remove('active');
+                progressBar.style.display = 'none';
+                
+                const randomIndex = Math.floor(Math.random() * catResults.length);
+                const randomResult = catResults[randomIndex];
+                result.textContent = randomResult;
+                localStorage.setItem('funnyCatResult', randomResult);
+                result.style.display = 'block';
+                pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫啦!';
+                pressArea.style.pointerEvents = 'none';
+                createConfetti();
+            }, pressDuration);
+        });
+        
+        ['mouseup', 'mouseleave', 'touchcancel'].forEach(event => {
+            pressArea.addEventListener(event, () => {
+                if (storedResult) return;
+                
+                clearTimeout(pressTimer);
+                clearInterval(textInterval);
+                clearInterval(progressInterval);
+                pressArea.classList.remove('active');
+                progressBar.style.display = 'none';
+                pressArea.querySelector('.test-text').textContent = '长按我\n解锁猫咪身份!';
+            });
+        });
+        
+        pressArea.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (storedResult) return;
+            
+            pressArea.classList.add('active');
+            progressBar.style.display = 'block';
+            pressCounter = 0;
+            progressFill.style.width = '0%';
+            
+            textInterval = setInterval(() => {
+                if (pressCounter < pressTexts.length) {
+                    pressArea.querySelector('.test-text').textContent = pressTexts[pressCounter];
+                    pressCounter++;
+                } else {
+                    pressArea.querySelector('.test-text').textContent = pressTexts[pressTexts.length - 1];
+                }
+            }, 700);
+            
+            progressInterval = setInterval(() => {
+                const currentWidth = parseFloat(progressFill.style.width) || 0;
+                if (currentWidth < 100) {
+                    progressFill.style.width = `${currentWidth + progressStep}%`;
+                } else {
+                    clearInterval(progressInterval);
+                }
+            }, 100);
+            
+            pressTimer = setTimeout(() => {
+                clearInterval(textInterval);
+                clearInterval(progressInterval);
+                pressArea.classList.remove('active');
+                progressBar.style.display = 'none';
+                
+                const randomIndex = Math.floor(Math.random() * catResults.length);
+                const randomResult = catResults[randomIndex];
+                result.textContent = randomResult;
+                localStorage.setItem('funnyCatResult', randomResult);
+                result.style.display = 'block';
+                pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫啦!';
+                pressArea.style.pointerEvents = 'none';
+                createConfetti();
+            }, pressDuration);
+        });
+    </script>
+</body>
+</html>
