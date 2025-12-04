@@ -83,6 +83,7 @@
             line-height: 1.5;
             font-weight: bold;
         }
+        /* 新增刷新提示小字样式 */
         .refresh-text {
             font-size: 0.9rem;
             color: #6b7280;
@@ -177,7 +178,7 @@
         @media (max-width: 768px) {
             .title { font-size: 1.7rem; }
             .test-text { font-size: 1.4rem; }
-            .refresh-text { font-size: 0.8rem; }
+            .refresh-text { font-size: 0.8rem; } /* 响应式调整 */
             .result { font-size: 1.2rem; padding: 12px 20px; }
             .press-area { width: 85%; height: 65%; }
         }
@@ -191,6 +192,7 @@
         <div class="cat-icon cat1">🐱</div>
         <div class="press-area" id="pressArea">
             <div class="test-text">长按我<br>解锁猫咪身份!</div>
+            <!-- 新增刷新提示小字 -->
             <div class="refresh-text" style="display: none;">按下刷新</div>
         </div>
         <div class="cat-icon cat2">🐾</div>
@@ -201,7 +203,7 @@
     </div>
     
     <div class="result" id="result"></div>
-    <div class="tip" id="tip">⚠️ 提示: 已缓存数据，刷新不会变化了</div>
+    <div class="tip" id="tip">⚠️ 提示: 已缓存数据，刷新请按下「按下刷新」</div>
     <div class="author">作者: 星汐 🐱</div>
     <script>
         const pressArea = document.getElementById('pressArea');
@@ -314,7 +316,6 @@
         const pressDuration = 3000;
         const progressStep = 100 / (pressDuration / 100);
         
-        // 只有未生成结果时才绑定长按事件
         if (!storedResult) {
             pressArea.addEventListener('mousedown', (e) => {
                 e.preventDefault();
