@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>测测你是不是小猫咪🐱</title>
+    <title>测测你在猫猫世界的身份🐱</title>
     <style>
         * {
             margin: 0;
@@ -21,25 +21,26 @@
             padding: 20px;
             overflow-x: hidden;
         }
+    
         .title {
-            font-size: 2.8rem;
+            font-size: 2rem;
             color: #e53e3e;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
-            text-shadow: 3px 3px 0px #ffbaaf, 6px 6px 0px rgba(229,62,62,0.1);
+            text-shadow: 2px 2px 0px #ffbaaf, 4px 4px 0px rgba(229,62,62,0.1);
             animation: bounce 1s ease infinite alternate;
         }
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #9f7aea;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
             font-weight: bold;
         }
         .test-box {
             width: 90%;
-            max-width: 550px;
-            height: 320px;
+            max-width: 500px;
+            height: 280px;
             background: #fff;
             border-radius: 30px;
             display: flex;
@@ -50,6 +51,7 @@
             overflow: hidden;
             border: 5px solid #ffd166;
         }
+    
         .press-area {
             width: 80%;
             height: 70%;
@@ -59,8 +61,9 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, background 0.3s ease;
             border: 3px dashed #ff9f1c;
+            transform-origin: center;
         }
         .press-area:hover {
             background: rgba(255,209,102,0.3);
@@ -68,9 +71,11 @@
         }
         .press-area.active {
             background: rgba(255,209,102,0.4);
+            transform: scale(0.98);
         }
+        
         .test-text {
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: #dc2626;
             text-align: center;
             z-index: 2;
@@ -79,7 +84,7 @@
         }
         .cat-icon {
             position: absolute;
-            font-size: 6rem;
+            font-size: 5rem;
             opacity: 0.15;
             z-index: 1;
             transition: transform 0.5s ease;
@@ -90,34 +95,35 @@
         .cat1 { top: 10px; left: 10px; transform: rotate(-15deg); }
         .cat2 { bottom: 10px; right: 10px; transform: rotate(15deg); }
         .cat3 { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); opacity: 0.08; }
+    
         .result {
-            margin-top: 40px;
-            font-size: 1.8rem;
+            margin-top: 30px;
+            font-size: 1.4rem;
             color: #2563eb;
             text-align: center;
             display: none;
             animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             background: #fff;
-            padding: 20px 30px;
+            padding: 15px 25px;
             border-radius: 50px;
             box-shadow: 0 8px 20px rgba(37,99,235,0.15);
             max-width: 90%;
         }
         .tip {
-            margin-top: 25px;
-            font-size: 1.1rem;
+            margin-top: 15px;
+            font-size: 0.95rem;
             color: #6b7280;
             text-align: center;
             background: #fef2f2;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 30px;
             border: 2px dashed #fca5a5;
         }
         .author {
             position: fixed;
-            bottom: 25px;
+            bottom: 20px;
             color: #ec4899;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(236,72,153,0.2);
         }
@@ -133,9 +139,9 @@
         }
         .progress-bar {
             position: absolute;
-            bottom: 30px;
+            bottom: 25px;
             width: 70%;
-            height: 12px;
+            height: 10px;
             background: #f3f4f6;
             border-radius: 6px;
             overflow: hidden;
@@ -149,11 +155,11 @@
         }
         @keyframes bounce {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-10px); }
+            100% { transform: translateY(-8px); }
         }
         @keyframes pop {
             0% { transform: scale(0.7) translateY(20px); opacity: 0; }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.05);}
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
         @keyframes confetti {
@@ -161,16 +167,16 @@
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
         @media (max-width: 768px) {
-            .title { font-size: 2.2rem; }
-            .test-text { font-size: 1.7rem; }
-            .result { font-size: 1.5rem; padding: 15px 20px; }
+            .title { font-size: 1.7rem; }
+            .test-text { font-size: 1.4rem; }
+            .result { font-size: 1.2rem; padding: 12px 20px; }
             .press-area { width: 85%; height: 65%; }
         }
     </style>
 </head>
 <body>
     <h1 class="title">测测你在猫猫世界的身份🐱</h1>
-    <p class="subtitle">哆啦家族驾到！解锁蓝胖子同款猫咪身份～</p>
+    <p class="subtitle">你在猫猫世界会是什么身份呢，快来测一测吧～</p>
     
     <div class="test-box" id="testBox">
         <div class="cat-icon cat1">🐱</div>
@@ -185,8 +191,8 @@
     </div>
     
     <div class="result" id="result"></div>
-    <div class="tip" id="tip">⚠️ 提示: 仅长按中间虚线区域有效，清除缓存可重新抽！</div>
-    <div class="author">作者: Bdlxx 🐱</div>
+    <div class="tip" id="tip">⚠️ 提示: 已缓存数据，刷新不会变化了</div>
+    <div class="author">作者: xingxi 🐱</div>
 
     <script>
         const pressArea = document.getElementById('pressArea');
@@ -195,9 +201,8 @@
         const progressBar = document.getElementById('progressBar');
         const progressFill = document.getElementById('progressFill');
         
-        // 哆啦家族+动画明星+热梗+经典四合一系列（50种！新增哆啦A梦/哆啦美专属身份）
+        //（50种）
         const catResults = [
-            // 原有经典+热梗+动画明星身份（48种）
             "🐽 你是一只「猪咪本咪」！吃嘛嘛香，睡嘛嘛沉，肚子圆滚滚，走路摇摇晃晃，可爱到犯规～",
             "🌚 你是一只「夜猫子战神」！凌晨3点蹦迪，早上10点不起，主打一个昼夜颠倒，活力无限！",
             "🤯 你是一只「话痨暹罗猫」！见人就喵喵叫，分享八卦停不下来，是家里的消息通～",
@@ -246,21 +251,20 @@
             "🎨 你是一只「小猪佩奇的猫咪邻居」！性格温柔，喜欢和小朋友（小猫咪）一起玩泥巴，亲和力满分～",
             "🚀 你是一只「奥特曼猫咪形态」！遇到“怪兽”（吸尘器）就摆出战斗姿势，虽然会害怕，但从不退缩～",
             "📚 你是一只「蓝猫淘气三千问猫」！好奇心爆棚，喜欢追着主人问“为什么”，是猫界十万个为什么～",
-            // 新增2种哆啦家族专属身份
             "🔵 你是一只「哆啦A梦本猫」！通体湛蓝，肚子上藏着“四次元口袋”，能掏出罐头、逗猫棒，帮铲屎官解决所有烦恼，超治愈～",
             "🎀 你是一只「哆啦美同款猫咪」！粉色铃铛+白色围脖，温柔又细心，会用“空气炮”（其实是吹口气）安抚emo的铲屎官，是猫界小天使～"
         ];
         
-        // 检查本地存储是否有结果
+        // 检查本地缓存
         const storedResult = localStorage.getItem('funnyCatResult');
         if (storedResult) {
             result.textContent = storedResult;
             result.style.display = 'block';
-            pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫啦!';
+            pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫猫啦!';
             pressArea.style.pointerEvents = 'none';
         }
         
-        // 生成彩色纸屑特效
+        // 彩色纸屑特效
         function createConfetti() {
             const colors = ['#fef08a', '#f87171', '#60a5fa', '#a78bfa', '#f472b6'];
             for (let i = 0; i < 50; i++) {
@@ -326,7 +330,7 @@
                 result.textContent = randomResult;
                 localStorage.setItem('funnyCatResult', randomResult);
                 result.style.display = 'block';
-                pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫啦!';
+                pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫猫啦!';
                 pressArea.style.pointerEvents = 'none';
                 createConfetti();
             }, pressDuration);
@@ -383,7 +387,7 @@
                 result.textContent = randomResult;
                 localStorage.setItem('funnyCatResult', randomResult);
                 result.style.display = 'block';
-                pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫啦!';
+                pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫猫啦!';
                 pressArea.style.pointerEvents = 'none';
                 createConfetti();
             }, pressDuration);
