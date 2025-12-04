@@ -58,7 +58,6 @@
             background: rgba(255,209,102,0.2);
             border-radius: 20px;
             display: flex;
-            flex-direction: column; /* 改为纵向排列 */
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -82,14 +81,6 @@
             z-index: 2;
             line-height: 1.5;
             font-weight: bold;
-        }
-        /* 新增刷新提示小字样式 */
-        .refresh-text {
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-top: 10px;
-            text-align: center;
-            z-index: 2;
         }
         .cat-icon {
             position: absolute;
@@ -178,7 +169,6 @@
         @media (max-width: 768px) {
             .title { font-size: 1.7rem; }
             .test-text { font-size: 1.4rem; }
-            .refresh-text { font-size: 0.8rem; } /* 响应式调整 */
             .result { font-size: 1.2rem; padding: 12px 20px; }
             .press-area { width: 85%; height: 65%; }
         }
@@ -192,8 +182,6 @@
         <div class="cat-icon cat1">🐱</div>
         <div class="press-area" id="pressArea">
             <div class="test-text">长按我<br>解锁猫咪身份!</div>
-            <!-- 新增刷新提示小字 -->
-            <div class="refresh-text" style="display: none;">按下刷新</div>
         </div>
         <div class="cat-icon cat2">🐾</div>
         <div class="cat-icon cat3">😼</div>
@@ -203,17 +191,17 @@
     </div>
     
     <div class="result" id="result"></div>
-    <div class="tip" id="tip">⚠️ 提示: 已缓存数据，刷新请按下「按下刷新」</div>
+    <div class="tip" id="tip">⚠️ 提示: 已缓存数据，刷新不会变化了</div>
     <div class="author">作者: 星汐 🐱</div>
+
     <script>
         const pressArea = document.getElementById('pressArea');
         const result = document.getElementById('result');
         const tip = document.getElementById('tip');
         const progressBar = document.getElementById('progressBar');
         const progressFill = document.getElementById('progressFill');
-        const refreshText = document.querySelector('.refresh-text'); // 获取刷新提示元素
         
-        //（56种）
+        //（53种）
         const catResults = [
             "🐽 你是一只「猪咪本咪」！吃嘛嘛香，睡嘛嘛沉，肚子圆滚滚，走路摇摇晃晃，可爱到犯规～",
             "🌚 你是一只「夜猫子战神」！凌晨3点蹦迪，早上10点不起，主打一个昼夜颠倒，活力无限！",
@@ -267,10 +255,9 @@
             "🎀 你是一只「哆啦美同款猫咪」！粉色铃铛+白色围脖，温柔又细心，会用“空气炮”（其实是吹口气）安抚emo的铲屎官，是猫界小天使～",
             "⚫ 你是一只「罗小黑本黑」！通体乌黑发亮，眼神灵动，能操控领域，平时爱撒娇，关键时刻超靠谱～",
             "🌿 你是一只「罗小黑同款阿根猫」！外表高冷，实则温柔，擅长冰系能力，还会默默守护身边的人，安全感拉满～",
-            "🐾 你是一只「罗小黑的伙伴比丢」！软乎乎的小妖精，爱吃一切能吃的东西，圆滚滚超治愈，走路自带萌点～"
-            "🐱 你是一只「无限暖暖·大喵本喵」！圆滚滚的黄金绒毛，爱吐槽更爱美食，总能精准找到绝美穿搭，是旅行中的时尚向导～",
-            "✨ 你是一只「大喵同款幸运猫」！自带欧气buff，走到哪都能发现隐藏美景，穿搭从不踩雷，还能帮身边人解锁好运～",
-            "🌍 你是一只「旅行达人小大喵」！跟着暖暖环游世界，见过沙漠星空也踏过海岛沙滩，性格活泼爱唠嗑，满脑子都是旅行攻略～"
+            "🐾 你是一只「罗小黑的伙伴比丢」！软乎乎的小妖精，爱吃一切能吃的东西，圆滚滚超治愈，走路自带萌点～""🐱 你是一只「无限暖暖·大喵本喵」！圆滚滚的黄金绒毛，爱吐槽更爱美食，总能精准找到绝美穿搭，是旅行中的时尚向导～",
+     "✨ 你是一只「大喵同款幸运猫」！自带欧气buff，走到哪都能发现隐藏美景，穿搭从不踩雷，还能帮身边人解锁好运～",
+     "🌍 你是一只「旅行达人小大喵」！跟着暖暖环游世界，见过沙漠星空也踏过海岛沙滩，性格活泼爱唠嗑，满脑子都是旅行攻略～"
         ];
         
         // 检查本地缓存
@@ -279,14 +266,7 @@
             result.textContent = storedResult;
             result.style.display = 'block';
             pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫猫啦!';
-            refreshText.style.display = 'block'; // 显示刷新提示小字
-            // 已生成结果时，点击按钮触发刷新
-            pressArea.onclick = function() {
-                localStorage.removeItem('funnyCatResult'); // 清除缓存
-                location.reload(); // 刷新页面重新开始
-            };
-        } else {
-            pressArea.style.pointerEvents = 'auto'; // 恢复点击事件
+            pressArea.style.pointerEvents = 'none';
         }
         
         // 彩色纸屑特效
@@ -317,115 +297,106 @@
         const pressDuration = 3000;
         const progressStep = 100 / (pressDuration / 100);
         
-        // 只有未生成结果时才绑定长按事件
-        if (!storedResult) {
-            pressArea.addEventListener('mousedown', (e) => {
-                e.preventDefault();
-                
-                pressArea.classList.add('active');
-                progressBar.style.display = 'block';
-                pressCounter = 0;
-                progressFill.style.width = '0%';
-                
-                textInterval = setInterval(() => {
-                    if (pressCounter < pressTexts.length) {
-                        pressArea.querySelector('.test-text').textContent = pressTexts[pressCounter];
-                        pressCounter++;
-                    } else {
-                        pressArea.querySelector('.test-text').textContent = pressTexts[pressTexts.length - 1];
-                    }
-                }, 700);
-                
-                progressInterval = setInterval(() => {
-                    const currentWidth = parseFloat(progressFill.style.width) || 0;
-                    if (currentWidth < 100) {
-                        progressFill.style.width = `${currentWidth + progressStep}%`;
-                    } else {
-                        clearInterval(progressInterval);
-                    }
-                }, 100);
-                
-                pressTimer = setTimeout(() => {
-                    clearInterval(textInterval);
-                    clearInterval(progressInterval);
-                    pressArea.classList.remove('active');
-                    progressBar.style.display = 'none';
-                    
-                    const randomIndex = Math.floor(Math.random() * catResults.length);
-                    const randomResult = catResults[randomIndex];
-                    result.textContent = randomResult;
-                    localStorage.setItem('funnyCatResult', randomResult);
-                    result.style.display = 'block';
-                    pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫猫啦!';
-                    refreshText.style.display = 'block'; // 显示刷新提示小字
-                    // 生成结果后替换为刷新逻辑
-                    pressArea.onclick = function() {
-                        localStorage.removeItem('funnyCatResult');
-                        location.reload();
-                    };
-                    createConfetti();
-                }, pressDuration);
-            });
+        pressArea.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            if (storedResult) return;
             
-            ['mouseup', 'mouseleave', 'touchcancel'].forEach(event => {
-                pressArea.addEventListener(event, () => {
-                    clearTimeout(pressTimer);
-                    clearInterval(textInterval);
-                    clearInterval(progressInterval);
-                    pressArea.classList.remove('active');
-                    progressBar.style.display = 'none';
-                    pressArea.querySelector('.test-text').textContent = '长按我\n解锁猫咪身份!';
-                });
-            });
+            pressArea.classList.add('active');
+            progressBar.style.display = 'block';
+            pressCounter = 0;
+            progressFill.style.width = '0%';
             
-            pressArea.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                
-                pressArea.classList.add('active');
-                progressBar.style.display = 'block';
-                pressCounter = 0;
-                progressFill.style.width = '0%';
-                
-                textInterval = setInterval(() => {
-                    if (pressCounter < pressTexts.length) {
-                        pressArea.querySelector('.test-text').textContent = pressTexts[pressCounter];
-                        pressCounter++;
-                    } else {
-                        pressArea.querySelector('.test-text').textContent = pressTexts[pressTexts.length - 1];
-                    }
-                }, 700);
-                
-                progressInterval = setInterval(() => {
-                    const currentWidth = parseFloat(progressFill.style.width) || 0;
-                    if (currentWidth < 100) {
-                        progressFill.style.width = `${currentWidth + progressStep}%`;
-                    } else {
-                        clearInterval(progressInterval);
-                    }
-                }, 100);
-                
-                pressTimer = setTimeout(() => {
-                    clearInterval(textInterval);
+            textInterval = setInterval(() => {
+                if (pressCounter < pressTexts.length) {
+                    pressArea.querySelector('.test-text').textContent = pressTexts[pressCounter];
+                    pressCounter++;
+                } else {
+                    pressArea.querySelector('.test-text').textContent = pressTexts[pressTexts.length - 1];
+                }
+            }, 700);
+            
+            progressInterval = setInterval(() => {
+                const currentWidth = parseFloat(progressFill.style.width) || 0;
+                if (currentWidth < 100) {
+                    progressFill.style.width = `${currentWidth + progressStep}%`;
+                } else {
                     clearInterval(progressInterval);
-                    pressArea.classList.remove('active');
-                    progressBar.style.display = 'none';
-                    
-                    const randomIndex = Math.floor(Math.random() * catResults.length);
-                    const randomResult = catResults[randomIndex];
-                    result.textContent = randomResult;
-                    localStorage.setItem('funnyCatResult', randomResult);
-                    result.style.display = 'block';
-                    pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫猫啦!';
-                    refreshText.style.display = 'block'; // 显示刷新提示小字
-                    // 生成结果后替换为刷新逻辑
-                    pressArea.onclick = function() {
-                        localStorage.removeItem('funnyCatResult');
-                        location.reload();
-                    };
-                    createConfetti();
-                }, pressDuration);
+                }
+            }, 100);
+            
+            pressTimer = setTimeout(() => {
+                clearInterval(textInterval);
+                clearInterval(progressInterval);
+                pressArea.classList.remove('active');
+                progressBar.style.display = 'none';
+                
+                const randomIndex = Math.floor(Math.random() * catResults.length);
+                const randomResult = catResults[randomIndex];
+                result.textContent = randomResult;
+                localStorage.setItem('funnyCatResult', randomResult);
+                result.style.display = 'block';
+                pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫猫啦!';
+                pressArea.style.pointerEvents = 'none';
+                createConfetti();
+            }, pressDuration);
+        });
+        
+        ['mouseup', 'mouseleave', 'touchcancel'].forEach(event => {
+            pressArea.addEventListener(event, () => {
+                if (storedResult) return;
+                
+                clearTimeout(pressTimer);
+                clearInterval(textInterval);
+                clearInterval(progressInterval);
+                pressArea.classList.remove('active');
+                progressBar.style.display = 'none';
+                pressArea.querySelector('.test-text').textContent = '长按我\n解锁猫咪身份!';
             });
-        }
+        });
+        
+        pressArea.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (storedResult) return;
+            
+            pressArea.classList.add('active');
+            progressBar.style.display = 'block';
+            pressCounter = 0;
+            progressFill.style.width = '0%';
+            
+            textInterval = setInterval(() => {
+                if (pressCounter < pressTexts.length) {
+                    pressArea.querySelector('.test-text').textContent = pressTexts[pressCounter];
+                    pressCounter++;
+                } else {
+                    pressArea.querySelector('.test-text').textContent = pressTexts[pressTexts.length - 1];
+                }
+            }, 700);
+            
+            progressInterval = setInterval(() => {
+                const currentWidth = parseFloat(progressFill.style.width) || 0;
+                if (currentWidth < 100) {
+                    progressFill.style.width = `${currentWidth + progressStep}%`;
+                } else {
+                    clearInterval(progressInterval);
+                }
+            }, 100);
+            
+            pressTimer = setTimeout(() => {
+                clearInterval(textInterval);
+                clearInterval(progressInterval);
+                pressArea.classList.remove('active');
+                progressBar.style.display = 'none';
+                
+                const randomIndex = Math.floor(Math.random() * catResults.length);
+                const randomResult = catResults[randomIndex];
+                result.textContent = randomResult;
+                localStorage.setItem('funnyCatResult', randomResult);
+                result.style.display = 'block';
+                pressArea.querySelector('.test-text').textContent = '你已经是有身份的猫猫啦!';
+                pressArea.style.pointerEvents = 'none';
+                createConfetti();
+            }, pressDuration);
+        });
     </script>
 </body>
 </html>
